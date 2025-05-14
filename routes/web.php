@@ -3,13 +3,40 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+
+
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
-Route::get('/admin', function () {
-    return view('admin');
-});
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FinanceController;
+
+Route::get('/kelola-finance', [AdminController::class, 'kelolaFinance'])->name('kelola.finance');
+Route::get('/kelola-committee', [AdminController::class, 'kelolaCommittee'])->name('kelola.committee');
+
+// routes/web.php
+Route::post('/finance/users', [FinanceController::class, 'store'])->name('finance.users.store');
+
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\FinanceDashboardController;
+use App\Http\Controllers\CommitteeDashboardController;
+
+Route::get('/committee/dashboard', [CommitteeDashboardController::class, 'index'])->name('committee.dashboard');
+
+
+
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
+Route::get('/finance/dashboard', [FinanceDashboardController::class, 'index'])->name('finance.dashboard');
+
+use Illuminate\Support\Facades\Auth;
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect()->route('welcome');
+})->name('logout');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -21,12 +48,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-use App\Models\Event;
-
-Route::get('/', function () {
-    $events = Event::orderBy('date', 'asc')->take(3)->get();
-    return view('welcome', compact('events'));
-});
 
 
 require __DIR__.'/auth.php';

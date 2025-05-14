@@ -3,117 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Univers Events</title>
+    <title>JesJon University Events</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background-color: #f9f9f9;
-            padding: 40px;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .logo img {
-            width: 40px;
-        }
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-        }
-        .btn-register {
-            background-color: #004AAD;
-            color: #fff;
-            padding: 8px 16px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .hero {
-            background: linear-gradient(135deg, #004AAD, #1667C1);
-            color: white;
-            border-radius: 16px;
-            padding: 60px;
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        .hero h2 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-        .hero h1 {
-            font-size: 48px;
-            font-weight: 700;
-        }
-        .section-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 30px;
-        }
-        .event-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .event-card {
-            display: flex;
-            background: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        .event-card img {
-            width: 120px;
-            object-fit: cover;
-        }
-        .event-info {
-            padding: 20px;
-            flex: 1;
-        }
-        .event-info h3 {
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-        .event-info p {
-            color: #666;
-            margin-bottom: 10px;
-        }
-        .event-info a {
-            background-color: #004AAD;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-        }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        body { background-color: #f9f9f9; padding: 40px; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo img { width: 40px; }
+        nav a, nav form button { margin: 0 10px; text-decoration: none; color: #333; font-weight: 500; background: none; border: none; cursor: pointer; font-family: inherit; }
+        .btn-register { background-color: #004AAD; color: #fff; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+        .hero { background: linear-gradient(135deg, #004AAD, #1667C1); color: white; border-radius: 16px; padding: 60px; text-align: center; margin-bottom: 50px; }
+        .hero h2 { font-size: 20px; margin-bottom: 10px; }
+        .hero h1 { font-size: 48px; font-weight: 700; }
+        .section-title { font-size: 28px; font-weight: 700; margin-bottom: 30px; }
+        .event-list { display: flex; flex-direction: column; gap: 20px; }
+        .event-card { display: flex; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .event-card img { width: 120px; object-fit: cover; }
+        .event-info { padding: 20px; flex: 1; }
+        .event-info h3 { font-size: 18px; margin-bottom: 5px; }
+        .event-info p { color: #666; margin-bottom: 10px; }
+        .event-info a { background-color: #004AAD; color: #fff; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-weight: 600; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 50; }
+        .modal-content { background: #fff; padding: 20px; border-radius: 10px; width: 90%; max-width: 500px; }
+        .status-message { background: #d4edda; color: #155724; padding: 12px; border-radius: 6px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
+@if(session('status'))
+    <div class="status-message">{{ session('status') }}</div>
+@endif
+
 <header>
     <div class="logo">
         <img src="https://img.icons8.com/ios-filled/50/000000/university.png" alt="Logo">
-        <strong>JJ University</strong>
+        <strong>JesJon University</strong>
     </div>
     <nav>
         <a href="#">Home</a>
         <a href="#">Events</a>
-        <a class="btn-register" href="{{ route('register') }}" style="background-color: #004AAD; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">Daftar Sekarang</a>
+        @auth
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button class="btn-register bg-red-600 hover:bg-red-700">Logout</button>
+            </form>
+        @else
+            <a class="btn-register" href="{{ route('login') }}">Login</a>
+            <a class="btn-register" href="{{ route('register') }}">Daftar</a>
+        @endauth
     </nav>
 </header>
 
@@ -125,32 +63,56 @@
 <section>
     <h2 class="section-title">Daftar Event Terbaru</h2>
     <div class="event-list">
+        @foreach(['SEMINAR AI 2025', 'WORKSHOP UI/UX', 'KULIAH UMUM BISNIS'] as $event)
         <div class="event-card">
-            <img src="https://via.placeholder.com/120x100/004AAD/ffffff?text=AI" alt="Seminar AI">
+            <img src="https://via.placeholder.com/120x100/004AAD/ffffff?text={{ urlencode($event) }}" alt="{{ $event }}">
             <div class="event-info">
-                <h3>SEMINAR AI 2025</h3>
-                <p>21 Juni 2025</p>
-                <a href="#">Detail & Registrasi</a>
+                <h3>{{ $event }}</h3>
+                <p>{{ \Carbon\Carbon::now()->addDays(7)->format('d M Y') }}</p>
+                <a href="javascript:void(0)" onclick="openModal('{{ $event }}')">Detail & Registrasi</a>
             </div>
         </div>
-        <div class="event-card">
-            <img src="https://via.placeholder.com/120x100/004AAD/ffffff?text=UI%2FUX" alt="Workshop UI/UX">
-            <div class="event-info">
-                <h3>WORKSHOP UI/UX</h3>
-                <p>28 Juni 2025</p>
-                <a href="#">Detail & Registrasi</a>
-            </div>
-        </div>
-        <div class="event-card">
-            <img src="https://via.placeholder.com/120x100/004AAD/ffffff?text=Bisnis" alt="Kuliah Umum Bisnis">
-            <div class="event-info">
-                <h3>KULIAH UMUM BISNIS</h3>
-                <p>5 Juli 2025</p>
-                <a href="#">Detail & Registrasi</a>
-            </div>
-        </div>
+        @endforeach
     </div>
 </section>
+
+<!-- Modal -->
+<div id="eventModal" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle" class="text-xl font-bold mb-4 text-[#004AAD]">Judul Event</h3>
+        <p class="mb-4">Deskripsi lengkap event akan ditampilkan di sini...</p>
+
+        @auth
+        <form action="/bayar" method="POST">
+            @csrf
+            <input type="hidden" name="event" id="eventInput">
+            <button type="submit" class="bg-[#004AAD] text-white px-4 py-2 rounded hover:bg-blue-800 w-full">
+                Bayar Sekarang
+            </button>
+        </form>
+        @else
+        <p class="text-sm text-gray-600 text-center mb-2">Silakan login untuk melanjutkan pembayaran.</p>
+        <div class="flex gap-2 justify-center">
+            <a href="{{ route('login') }}" class="text-[#004AAD] font-medium hover:underline">Login</a>
+            <span>|</span>
+            <a href="{{ route('register') }}" class="text-[#004AAD] font-medium hover:underline">Daftar</a>
+        </div>
+        @endauth
+
+        <button onclick="closeModal()" class="mt-4 w-full text-center text-sm text-gray-500 hover:underline">Tutup</button>
+    </div>
+</div>
+
+<script>
+    function openModal(title) {
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('eventInput').value = title;
+        document.getElementById('eventModal').style.display = 'flex';
+    }
+    function closeModal() {
+        document.getElementById('eventModal').style.display = 'none';
+    }
+</script>
 
 </body>
 </html>

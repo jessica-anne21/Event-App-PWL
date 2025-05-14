@@ -2,110 +2,82 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Registrasi Member - Univers Events</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Akun</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background-color: #f9f9f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .register-container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            max-width: 500px;
-            width: 100%;
-        }
-        h2 {
-            color: #004AAD;
-            margin-bottom: 24px;
-            text-align: center;
-            font-size: 28px;
-            font-weight: 700;
-        }
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: #333;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            transition: border-color 0.2s;
-        }
-        input:focus {
-            border-color: #004AAD;
-            outline: none;
-        }
-        .btn-submit {
-            background-color: #004AAD;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            width: 100%;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .btn-submit:hover {
-            background-color: #003080;
-        }
-        .login-link {
-            text-align: center;
-            margin-top: 16px;
-            font-size: 14px;
-        }
-        .login-link a {
-            color: #004AAD;
-            text-decoration: none;
-            font-weight: 600;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
+        <h2 class="text-2xl font-bold text-center text-[#004AAD] mb-6">Buat Akun Baru</h2>
 
-<div class="register-container">
-    <h2>Registrasi Member</h2>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
-        <label for="name">Nama Lengkap</label>
-        <input type="text" id="name" name="name" required>
+        @if ($errors->any())
+            <div class="mb-4">
+                <ul class="list-disc list-inside text-sm text-red-600">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
 
-        <label for="phone">No. Telepon</label>
-        <input type="text" id="phone" name="phone" required>
+            <!-- Name -->
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-700">Nama</label>
+                <input id="name" name="name" type="text" required autofocus value="{{ old('name') }}"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-[#004AAD] focus:border-[#004AAD]">
+            </div>
 
-        <label for="password">Kata Sandi</label>
-        <input type="password" id="password" name="password" required>
+            <!-- Email -->
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input id="email" name="email" type="email" required value="{{ old('email') }}"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-[#004AAD] focus:border-[#004AAD]">
+            </div>
 
-        <label for="password_confirmation">Konfirmasi Kata Sandi</label>
-        <input type="password" id="password_confirmation" name="password_confirmation" required>
+            <!-- Password -->
+            <div class="mb-4">
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <input id="password" name="password" type="password" required
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-[#004AAD] focus:border-[#004AAD]">
+            </div>
 
-        <button type="submit" class="btn-submit">Daftar Sekarang</button>
-    </form>
+            <!-- Confirm Password -->
+            <div class="mb-4">
+                <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
+                <input id="password_confirmation" name="password_confirmation" type="password" required
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-[#004AAD] focus:border-[#004AAD]">
+            </div>
 
-    <div class="login-link">
-        Sudah punya akun? <a href="{{ route('login') }}">Login di sini</a>
+            <!-- Role Selection -->
+            <div class="mb-6">
+                <label for="role" class="block text-sm font-medium text-gray-700">Daftar Sebagai</label>
+                <select id="role" name="role" required
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-[#004AAD] focus:border-[#004AAD]">
+                    <option value="">-- Pilih Role --</option>
+                    <option value="member">Member</option>
+                    <option value="admin">Admin</option>
+                    <option value="finance">Finance</option>
+                    <option value="committee">Committee</option>
+                </select>
+            </div> 
+
+            <!-- Submit -->
+            <div>
+                <button type="submit"
+                        class="w-full bg-[#004AAD] text-white font-bold py-2 px-4 rounded-md hover:bg-blue-800">
+                    Daftar
+                </button>
+            </div>
+        </form>
+
+        <p class="text-sm text-center text-gray-600 mt-4">
+            Sudah punya akun?
+            <a href="{{ route('login') }}" class="text-[#004AAD] font-medium hover:underline">Login</a>
+        </p>
     </div>
-</div>
-
 </body>
 </html>
