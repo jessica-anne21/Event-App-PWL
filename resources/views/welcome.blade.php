@@ -63,16 +63,23 @@
 <section>
     <h2 class="section-title">Daftar Event Terbaru</h2>
     <div class="event-list">
-        @foreach(['SEMINAR AI 2025', 'WORKSHOP UI/UX', 'KULIAH UMUM BISNIS'] as $event)
-        <div class="event-card">
-            <img src="https://via.placeholder.com/120x100/004AAD/ffffff?text={{ urlencode($event) }}" alt="{{ $event }}">
-            <div class="event-info">
-                <h3>{{ $event }}</h3>
-                <p>{{ \Carbon\Carbon::now()->addDays(7)->format('d M Y') }}</p>
-                <a href="javascript:void(0)" onclick="openModal('{{ $event }}')">Detail & Registrasi</a>
-            </div>
+        @if($events->isEmpty())
+    <p>Belum Ada Event</p>
+@else
+    @foreach($events as $event)
+    <div class="event-card">
+        <img src="https://via.placeholder.com/120x100/004AAD/ffffff?text={{ urlencode($event->name) }}" alt="{{ $event->name }}">
+        <div class="event-info">
+            <h3>{{ $event->name }}</h3>
+            <p>{{ \Carbon\Carbon::parse($event->main_event_datetime)->format('d M Y H:i') }}</p>
+            <a href="javascript:void(0)" 
+               onclick="openModal({{ json_encode($event) }})">Detail & Registrasi</a>
         </div>
-        @endforeach
+    </div>
+@endforeach
+
+@endif
+
     </div>
 </section>
 
@@ -104,14 +111,26 @@
 </div>
 
 <script>
-    function openModal(title) {
-        document.getElementById('modalTitle').innerText = title;
-        document.getElementById('eventInput').value = title;
-        document.getElementById('eventModal').style.display = 'flex';
-    }
-    function closeModal() {
-        document.getElementById('eventModal').style.display = 'none';
-    }
+    function openModal(event) {
+    document.getElementById('modalTitle').innerText = event.name;
+
+    // Isi deskripsi lengkap, contoh:
+    const modalContent = document.querySelector('.modal-content p');
+    modalContent.innerHTML = `
+        <strong>Deskripsi:</strong> ${event.description}<br>
+        <strong>Waktu Utama:</strong> ${new Date(event.main_event_datetime).toLocaleString()}<br>
+        <strong>Lokasi:</strong> ${event.location}<br>
+        <strong>Speaker:</strong> ${event.speaker}<br>
+        <strong>Biaya:</strong> Rp ${event.fee.toLocaleString()}<br>
+        <strong>Kuota:</strong> ${event.quota}
+    `;
+
+    // Pasang nama event ke input hidden form pembayaran
+    document.getElementById('eventInput').value = event.name;
+
+    document.getElementById('eventModal').style.display = 'flex';
+}
+
 </script>
 
 </body>

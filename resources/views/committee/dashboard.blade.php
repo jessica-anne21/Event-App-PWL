@@ -130,47 +130,54 @@
         <div class="event-container">
             <h2>Data Event</h2>
             <div class="event-details">
-                <form action="#">
-                    <label for="event-name">Nama Event</label>
-                    <input type="text" id="event-name" name="event-name" placeholder="Seminar Teknologi" >
+                @if ($errors->any())
+    <div style="color:red;">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
-                    <label for="event-date">Tanggal & Waktu Pelaksanaan</label>
-                    <input type="datetime-local" id="event-date" name="event-date" placeholder="2025-06-15T09:00" >
+                <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    <label for="event-name">Nama Event</label>
+                    <input type="text" id="event-name" name="name" placeholder="Seminar Teknologi" required>
+
+                    <label for="event-date">Tanggal & Waktu Main Event</label>
+                    <input type="datetime-local" id="event-date" name="main_event_datetime" required>
+
+                    <label for="sub-event-date">Tanggal & Waktu Sub Event</label>
+                    <input type="datetime-local" id="sub-event-date" name="sub_event_datetime">
 
                     <label for="event-location">Lokasi</label>
-                    <input type="text" id="event-location" name="event-location" placeholder="Gedung Serba Guna, Kota X" >
+                    <input type="text" id="event-location" name="location" placeholder="Gedung Serba Guna, Kota X" required>
 
                     <label for="event-speaker">Narasumber</label>
-                    <input type="text" id="event-speaker" name="event-speaker" placeholder="Dr. Jane Doe" >
+                    <input type="text" id="event-speaker" name="speaker" placeholder="Dr. Jane Doe">
+
+                    <label for="description">Deskripsi Event</label>
+                    <input type="text" id="description" name="description" placeholder="Seminar ini adalah...">
+
 
                     <label for="event-poster">Poster Event</label>
-                    <input type="file" id="event-poster" name="event-poster" >
+                    <input type="file" id="event-poster" name="poster">
 
                     <label for="event-fee">Biaya Registrasi</label>
-                    <input type="number" id="event-fee" name="event-fee" placeholder="100000" >
+                    <input type="number" id="event-fee" name="fee" placeholder="100000" required>
 
-                    <label for="max-participants">Jumlah Maksimal Peserta</label>
-                    <input type="number" id="max-participants" name="max-participants" placeholder="200" >
+                    <label for="quota">Jumlah Maksimal Peserta</label>
+                    <input type="number" id="quota" name="quota" placeholder="200" required>
+
+                    <button type="submit" class="btn">Tambah Event</button>
                 </form>
             </div>
+
+
         </div>
 
-
-        <!-- Upload Sertifikat Section
-        <div class="upload-container">
-            <h2>Upload Sertifikat Peserta</h2>
-            <div class="upload-form">
-                <form action="#">
-                    <label for="participant-name">Nama Peserta</label>
-                    <input type="text" id="participant-name" name="participant-name" placeholder="Nama Peserta">
-
-                    <label for="certificate-file">File Sertifikat</label>
-                    <input type="file" id="certificate-file" name="certificate-file" accept=".pdf,.jpg,.png">
-
-                    <button class="btn" type="submit">Upload Sertifikat</button>
-                </form>
-            </div>
-        </div> -->
     </div>
 
 </body>

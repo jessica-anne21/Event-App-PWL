@@ -9,6 +9,21 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+use App\Http\Controllers\EventController;
+
+Route::post('/events', [EventController::class, 'store'])->name('events.store');
+
+use App\Models\Event;
+
+Route::get('/', function () {
+    $events = Event::orderBy('main_event_datetime', 'asc')->get();
+    return view('welcome', compact('events'));
+});
+
+
+
+
+
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FinanceController;
 
@@ -17,6 +32,8 @@ Route::get('/kelola-committee', [AdminController::class, 'kelolaCommittee'])->na
 
 // routes/web.php
 Route::post('/finance/users', [FinanceController::class, 'store'])->name('finance.users.store');
+
+
 
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\FinanceDashboardController;
