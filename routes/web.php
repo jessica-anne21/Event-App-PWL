@@ -18,20 +18,26 @@ use App\Models\Event;
 Route::get('/', function () {
     $events = Event::orderBy('main_event_datetime', 'asc')->get();
     return view('welcome', compact('events'));
+})->name('welcome');;
+
+
+
+use App\Http\Controllers\PaymentController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/bayar', [PaymentController::class, 'show'])->name('bayar.show');
+    Route::post('/bayar/proses', [PaymentController::class, 'process'])->name('bayar.proses');
 });
 
 
-
-
-
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\FinanceController;
+// use App\Http\Controllers\FinanceController;
 
 Route::get('/kelola-finance', [AdminController::class, 'kelolaFinance'])->name('kelola.finance');
 Route::get('/kelola-committee', [AdminController::class, 'kelolaCommittee'])->name('kelola.committee');
 
 // routes/web.php
-Route::post('/finance/users', [FinanceController::class, 'store'])->name('finance.users.store');
+// Route::post('/finance/users', [FinanceController::class, 'store'])->name('finance.users.store');
 
 
 
@@ -45,7 +51,18 @@ Route::get('/committee/dashboard', [CommitteeDashboardController::class, 'index'
 
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
+// Route::get('/finance/dashboard', [FinanceDashboardController::class, 'index'])->name('finance.dashboard');
+// routes/web.php
+
+
 Route::get('/finance/dashboard', [FinanceDashboardController::class, 'index'])->name('finance.dashboard');
+
+Route::post('/finance/verify/{registration}', [FinanceDashboardController::class, 'verify'])->name('finance.verify');
+
+use App\Http\Controllers\OrderController;
+
+Route::get('/my_orders', [OrderController::class, 'index'])->name('my_orders')->middleware('auth');
+
 
 use Illuminate\Support\Facades\Auth;
 

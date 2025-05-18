@@ -51,7 +51,7 @@ public function store(Request $request): RedirectResponse
         case 'guest':
             return redirect()->route('welcome');
         default: // member
-            return redirect()->route('welcome');
+            return redirect('/');
     }
 }
 

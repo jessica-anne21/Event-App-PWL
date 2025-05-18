@@ -21,5 +21,10 @@ class Event extends Model
     'created_by',
 ];
 
+public function event() {
+    return $this->belongsTo(Event::class);
+}
+
+
 
 }

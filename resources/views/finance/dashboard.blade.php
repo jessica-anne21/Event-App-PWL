@@ -6,182 +6,96 @@
     <title>Dashboard Finance</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-            color: #1f2937;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .header {
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #004AAD;
-        }
-
-        .header p {
-            color: #6b7280;
-        }
-
-        .logout-btn {
-            padding: 0.5rem 1rem;
-            background-color: #004AAD;
-            color: white;
-            font-size: 0.875rem;
-            border-radius: 0.5rem;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .logout-btn:hover {
-            background-color: #003580;
-        }
-
-        .greeting {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #6b7280;
-        }
-
-        .table-container {
-            margin-top: 2rem;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-
-        th, td {
-            padding: 1rem;
-            text-align: left;
-        }
-
-        th {
-            background-color: #004AAD;
-            color: white;
-        }
-
-        .btn {
-            padding: 0.5rem 1rem;
-            background-color: #004AAD;
-            color: white;
-            font-size: 0.875rem;
-            border-radius: 0.5rem;
-            text-decoration: none;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background-color: #003580;
-        }
-
-        .form-container {
-            margin-top: 2rem;
-            background-color: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-container h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .form-container label {
-            font-weight: 600;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-container input,
-        .form-container textarea {
-            width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 0.5rem;
-        }
-
-        .form-container button {
-            padding: 0.75rem 1.5rem;
-            background-color: #004AAD;
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-        }
-
-        .form-container button:hover {
-            background-color: #003580;
-        }
+        /* -- gaya yang sama seperti file asalmu, dipotong singkat -- */
+        body{margin:0;font-family:'Inter',sans-serif;background:#f3f4f6;color:#1f2937}
+        .container{max-width:1200px;margin:auto;padding:2rem}
+        .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}
+        h1{font-size:2rem;font-weight:700;color:#004AAD;margin:0}
+        .logout-btn{padding:.5rem 1rem;background:#004AAD;color:#fff;border-radius:.5rem;border:none;cursor:pointer}
+        .logout-btn:hover{background:#003580}
+        table{width:100%;border-collapse:collapse}
+        th,td{padding:1rem;border:1px solid #ccc}
+        th{background:#004AAD;color:#fff}
+        .btn{padding:.5rem 1rem;background:#004AAD;color:#fff;border-radius:.5rem;text-decoration:none;cursor:pointer;border:none}
+        .btn:hover{background:#003580}
+        .badge{padding:.25rem .75rem;border-radius:.5rem;font-size:.75rem;color:#fff}
+        .pending{background:#f59e0b}.approved{background:#16a34a}.rejected{background:#dc2626}
     </style>
 </head>
 <body>
+<div class="container">
 
-    <div class="container">
-        <div class="header">
-            <div>
-                <h1>Dashboard Finance</h1>
-                <p>Selamat datang {{ Auth::user()->name }}, kelola pembayaran peserta event di sini.</p>
-            </div>
-            <!-- Tombol Logout -->
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="logout-btn">Logout</button>
-            </form>
+    <div class="header">
+        <div>
+            <h1>Dashboard Finance</h1>
+            <p>Selamat datang {{ Auth::user()->name }}, kelola pembayaran peserta event di sini.</p>
         </div>
-
-        <div class="table-container">
-            <h2>Daftar Peserta yang Telah Melakukan Pembayaran</h2>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nama Peserta</th>
-                        <th>Event</th>
-                        <th>Status Pembayaran</th>
-                        <th>Bukti Pembayaran</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Test</td>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>
-                            <a href="#" class="btn">Lihat Bukti</a>
-                        </td>
-                        <td>
-                            <a href="#" class="btn" data-toggle="modal">Verifikasi</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
+        <form action="{{ route('logout') }}" method="POST">@csrf
+            <button class="logout-btn">Logout</button>
+        </form>
     </div>
 
+    @if(session('success'))
+        <p style="color:#16a34a;font-weight:600">{{ session('success') }}</p>
+    @endif
+
+    <h2>Daftar Pembayaran Masuk</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Peserta</th>
+                <th>Event</th>
+                <th>Status</th>
+                <th>Bukti Pembayaran</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+        @forelse($registrations as $reg)
+            <tr>
+                <td>{{ $reg->user->name }}</td>
+                <td>{{ $reg->event->name }}</td>
+                <td>
+                    <span class="badge {{ $reg->payment_status }}">
+                        {{ ucfirst($reg->payment_status) }}
+                    </span>
+                </td>
+                <td>
+                    @if($reg->payment_proof)
+                        <a href="{{ asset('storage/'.$reg->payment_proof) }}"
+                           target="_blank" class="btn">Lihat</a>
+                    @else
+                        -
+                    @endif
+                </td>
+                <td>
+                    @if($reg->payment_status === 'pending')
+                        <!-- Approve -->
+                        <form action="{{ route('finance.verify', $reg) }}"
+                              method="POST" style="display:inline">
+                            @csrf
+                            <input type="hidden" name="action" value="approved">
+                            <button class="btn" onclick="return confirm('Setujui pembayaran?')">Approve</button>
+                        </form>
+                        <!-- Reject -->
+                        <form action="{{ route('finance.verify', $reg) }}"
+                              method="POST" style="display:inline">
+                            @csrf
+                            <input type="hidden" name="action" value="rejected">
+                            <button class="btn" style="background:#dc2626"
+                                    onclick="return confirm('Tolak pembayaran?')">Reject</button>
+                        </form>
+                    @else
+                        —
+                    @endif
+                </td>
+            </tr>
+        @empty
+            <tr><td colspan="5" style="text-align:center">Belum ada pembayaran.</td></tr>
+        @endforelse
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
