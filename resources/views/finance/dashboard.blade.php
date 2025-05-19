@@ -46,55 +46,56 @@
             <tr>
                 <th>Nama Peserta</th>
                 <th>Event</th>
+                <th>Nominal Bayar</th>
                 <th>Status</th>
                 <th>Bukti Pembayaran</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-        @forelse($registrations as $reg)
-            <tr>
-                <td>{{ $reg->user->name }}</td>
-                <td>{{ $reg->event->name }}</td>
-                <td>
-                    <span class="badge {{ $reg->payment_status }}">
-                        {{ ucfirst($reg->payment_status) }}
-                    </span>
-                </td>
-                <td>
-                    @if($reg->payment_proof)
-                        <a href="{{ asset('storage/'.$reg->payment_proof) }}"
-                           target="_blank" class="btn">Lihat</a>
-                    @else
-                        -
-                    @endif
-                </td>
-                <td>
-                    @if($reg->payment_status === 'pending')
-                        <!-- Approve -->
-                        <form action="{{ route('finance.verify', $reg) }}"
-                              method="POST" style="display:inline">
-                            @csrf
-                            <input type="hidden" name="action" value="approved">
-                            <button class="btn" onclick="return confirm('Setujui pembayaran?')">Approve</button>
-                        </form>
-                        <!-- Reject -->
-                        <form action="{{ route('finance.verify', $reg) }}"
-                              method="POST" style="display:inline">
-                            @csrf
-                            <input type="hidden" name="action" value="rejected">
-                            <button class="btn" style="background:#dc2626"
-                                    onclick="return confirm('Tolak pembayaran?')">Reject</button>
-                        </form>
-                    @else
-                        —
-                    @endif
-                </td>
-            </tr>
-        @empty
-            <tr><td colspan="5" style="text-align:center">Belum ada pembayaran.</td></tr>
-        @endforelse
-        </tbody>
+@forelse($registrations as $reg)
+    <tr>
+        <td>{{ $reg->user->name }}</td>
+        <td>{{ $reg->event->name }}</td>
+        <td>Rp {{ number_format($reg->payment_amount, 0, ',', '.') }}</td> <!-- Tambahan -->
+        <td>
+            <span class="badge {{ $reg->payment_status }}">
+                {{ ucfirst($reg->payment_status) }}
+            </span>
+        </td>
+        <td>
+            @if($reg->payment_proof)
+                <a href="{{ asset('storage/'.$reg->payment_proof) }}"
+                   target="_blank" class="btn">Lihat</a>
+            @else
+                -
+            @endif
+        </td>
+        <td>
+            @if($reg->payment_status === 'pending')
+                <form action="{{ route('finance.verify', $reg) }}"
+                      method="POST" style="display:inline">
+                    @csrf
+                    <input type="hidden" name="action" value="approved">
+                    <button class="btn" onclick="return confirm('Setujui pembayaran?')">Approve</button>
+                </form>
+                <form action="{{ route('finance.verify', $reg) }}"
+                      method="POST" style="display:inline">
+                    @csrf
+                    <input type="hidden" name="action" value="rejected">
+                    <button class="btn" style="background:#dc2626"
+                            onclick="return confirm('Tolak pembayaran?')">Reject</button>
+                </form>
+            @else
+                —
+            @endif
+        </td>
+    </tr>
+@empty
+    <tr><td colspan="6" style="text-align:center">Belum ada pembayaran.</td></tr>
+@endforelse
+</tbody>
+
     </table>
 </div>
 </body>

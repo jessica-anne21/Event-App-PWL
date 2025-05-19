@@ -29,6 +29,10 @@
     <label for="payment_method">Metode Pembayaran</label>
     <input type="text" id="payment_method" name="payment_method" required>
 
+    <label for="payment_amount">Nominal Pembayaran</label>
+    <input type="number" id="payment_amount" name="payment_amount" required>
+
+
     <label for="payment_proof">Upload Bukti Pembayaran</label>
     <input type="file" id="payment_proof" name="payment_proof" accept="image/*" required>
 

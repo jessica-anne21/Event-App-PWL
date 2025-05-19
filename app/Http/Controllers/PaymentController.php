@@ -32,11 +32,14 @@ public function process(Request $request)
     $filename = 'proof_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
     $filePath = $file->storeAs('public/payment_proofs', $filename);
 
+    $event = Event::findOrFail($request->event_id); // ambil data event
+
     EventRegistration::create([
-        'event_id' => $request->event_id,
+        'event_id' => $event->id,
         'user_id' => auth()->id(),
         'payment_proof' => $filePath,
-        'payment_status' => 'pending', // atau "waiting_verification"
+        'payment_status' => 'pending',
+        'payment_amount' => $event->price, // disimpan biar tetap konsisten
         'is_attended' => false,
         'created_at' => now(),
         'updated_at' => now(),
