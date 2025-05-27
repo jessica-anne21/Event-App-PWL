@@ -131,8 +131,7 @@
     </div>
     <nav>
         <a href="#">Home</a>
-        <a href="#">Events</a>
-        <a href="{{ route('my_orders') }}">My Orders</a>
+        <a href="{{ route('order.history') }}">Order History</a>
 
         @auth
             <form method="POST" action="{{ route('logout') }}">
@@ -159,7 +158,7 @@
 @else
     @foreach($events as $event)
     <div class="event-card">
-        <img src="" alt="{{ $event->name }}">
+        <img src="{{ asset('storage/' . $event->poster) }}" alt="{{ $event->name }}">
         <div class="event-info">
             <h3>{{ $event->name }}</h3>
             <p>{{ \Carbon\Carbon::parse($event->main_event_datetime)->format('d M Y H:i') }}</p>

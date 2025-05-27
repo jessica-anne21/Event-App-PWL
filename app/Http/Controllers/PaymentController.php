@@ -48,4 +48,15 @@ public function process(Request $request)
     return redirect('/')->with('status', 'Bukti pembayaran berhasil diupload. Menunggu verifikasi.');
 }
 
+    public function history()
+{
+    $orders = EventRegistration::with('event')
+        ->where('user_id', auth()->id())
+        ->latest()
+        ->get();
+
+    return view('order-history', compact('orders'));
+}
+
+
 }

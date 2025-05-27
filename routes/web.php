@@ -29,6 +29,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/bayar/proses', [PaymentController::class, 'process'])->name('bayar.proses');
 });
 
+Route::get('/order-history', [PaymentController::class, 'history'])->name('order.history')->middleware('auth');
+
+
+
+Route::delete('/events/{id}', [EventController::class, 'destroy'])->name('events.destroy');
+Route::post('/events/{id}/close', [EventController::class, 'close'])->name('events.close');
 
 use App\Http\Controllers\AdminController;
 // use App\Http\Controllers\FinanceController;
@@ -45,7 +51,8 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\FinanceDashboardController;
 use App\Http\Controllers\CommitteeDashboardController;
 
-Route::get('/committee/dashboard', [CommitteeDashboardController::class, 'index'])->name('committee.dashboard');
+// Route::get('/committee/dashboard', [CommitteeDashboardController::class, 'index'])->name('committee.dashboard');
+Route::get('/committee/dashboard', [EventController::class, 'index'])->name('committee.dashboard');
 
 
 
@@ -58,10 +65,6 @@ Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name
 Route::get('/finance/dashboard', [FinanceDashboardController::class, 'index'])->name('finance.dashboard');
 
 Route::post('/finance/verify/{registration}', [FinanceDashboardController::class, 'verify'])->name('finance.verify');
-
-use App\Http\Controllers\OrderController;
-
-Route::get('/my_orders', [OrderController::class, 'index'])->name('my_orders')->middleware('auth');
 
 
 use Illuminate\Support\Facades\Auth;

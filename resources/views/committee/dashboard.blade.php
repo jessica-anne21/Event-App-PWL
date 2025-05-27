@@ -173,6 +173,51 @@
 
                     <button type="submit" class="btn">Tambah Event</button>
                 </form>
+                @if ($events->count())
+    <h2 style="margin-top: 2rem;">Daftar Event</h2>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 1rem; background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <thead style="background-color: #004AAD; color: white;">
+            <tr>
+                <th style="padding: 0.75rem; text-align: left;">Nama Event</th>
+                <th style="padding: 0.75rem;">Tanggal Main</th>
+                <th style="padding: 0.75rem;">Lokasi</th>
+                <th style="padding: 0.75rem;">Biaya</th>
+                <th style="padding: 0.75rem;">Quota</th>
+                <th style="padding: 0.75rem;">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($events as $event)
+                <tr style="border-top: 1px solid #e5e7eb;">
+                    <td style="padding: 0.75rem;">{{ $event->name }}</td>
+                    <td style="padding: 0.75rem;">{{ \Carbon\Carbon::parse($event->main_event_datetime)->format('d M Y H:i') }}</td>
+                    <td style="padding: 0.75rem;">{{ $event->location }}</td>
+                    <td style="padding: 0.75rem;">Rp{{ number_format($event->fee, 0, ',', '.') }}</td>
+                    <td style="padding: 0.75rem;">{{ $event->quota }}</td>
+                    <td style="padding: 0.75rem;">
+                        <form action="{{ route('events.destroy', $event->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus event ini?');" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn" style="background-color: #dc2626;">Hapus</button>
+                        </form>
+                        {{-- Tombol Tutup Event --}}
+                        @if(!$event->is_closed)
+                            <form action="{{ route('events.close', $event->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn" style="background-color: #f59e0b;">Tutup</button>
+                            </form>
+                        @else
+                            <span style="color: #10b981; font-weight: 600;">Sudah Ditutup</span>
+                        @endif
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+@else
+    <p style="margin-top: 2rem;">Belum ada event yang dibuat.</p>
+@endif
+
             </div>
 
 
